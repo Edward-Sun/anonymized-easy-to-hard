@@ -350,7 +350,6 @@ def fixed_broadcast_processed_state(
             lambda v: v.cpu() if v.dim() == 0 else _PosDimTensorInfo(v.shape, v.dtype),  # type: ignore[union-attr]
             optim_state,
         )
-    # Comment (zhiqings): the line below is a workaround for a bug in
     rank_0_global_rank = 0
     if group is not None:
         rank_0_global_rank = dist.get_global_rank(group, 0)
@@ -380,7 +379,6 @@ def fixed_broadcast_state(
         tensor = torch.zeros(
             state.shape, dtype=state.dtype, device=fsdp_state.compute_device
         )
-    # Comment (zhiqings): the line below is a workaround for a bug in
     rank_0_global_rank = 0
     if group is not None:
         rank_0_global_rank = dist.get_global_rank(group, 0)
@@ -721,7 +719,6 @@ def fixed_map_param_key_to_optim_keys(
         key_obj_list: List[Optional[List[_OptimStateKey]]] = (
             [all_optim_state_keys] if rank == 0 else [None]
         )
-        # Comment (zhiqings): the line below is a workaround for a bug in
         rank_0_global_rank = 0
         if group is not None:
             rank_0_global_rank = dist.get_global_rank(group, 0)
