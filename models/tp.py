@@ -299,7 +299,6 @@ def aggregate_forward_tensor_hook(
     input: Optional[Tuple[torch.Tensor, ...]],
     output: Optional[Tuple[torch.Tensor, ...]],
 ):
-    # TODO (zhiqings): all-reduce with fp32
     # see https://github.com/NVIDIA/nccl/issues/1026
     aggregated_output = funcol.all_reduce(output, "sum", get_model_parallel_group())
 
@@ -319,7 +318,6 @@ def aggregate_grad_hook(
     if grad_input[0] is None:
         return tuple([None] * (num_postional_args))
 
-    # TODO (zhiqings): all-reduce with fp32
     # see https://github.com/NVIDIA/nccl/issues/1026
     aggregated_grad_input = (
         funcol.all_reduce(grad_input[0], "sum", get_model_parallel_group()),
@@ -336,7 +334,6 @@ def reduce_from_model_parallel_region_hook(
     input: Optional[Tuple[torch.Tensor, ...]],
     output: Optional[Tuple[torch.Tensor, ...]],
 ):
-    # TODO (zhiqings): all-reduce with fp32
     # see https://github.com/NVIDIA/nccl/issues/1026
     if module.training:
         return _ReduceFromModelParallelRegion.apply(output)
@@ -659,7 +656,6 @@ def _reduce(ctx: Any, input_: torch.Tensor) -> torch.Tensor:
     if torch.distributed.get_world_size(group=group) == 1:
         return input_
 
-    # TODO (zhiqings): all-reduce with fp32
     # see https://github.com/NVIDIA/nccl/issues/1026
     torch.distributed.all_reduce(input_, group=group)
 
