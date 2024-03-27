@@ -46,7 +46,6 @@ def _calculate_outcome_accuracy(
             for predicted_answer, gt_answer in zip(predicted_answers, gt_answers)
         ]
 
-        # TODO (zhiqings): 0.25 is a magic number.
         unavailable_reward = 0.25
         if outcome_reward:
             symbolic_rewards = outcome_accuracy
@@ -403,7 +402,6 @@ def shape_math_process_rewards(
     for idx, per_solution_new_line_scores in enumerate(new_line_scores):
         for pos, score in per_solution_new_line_scores:
             assert pos >= 0, f"Not non-negative: {pos}"
-            # # TODO (zhiqings): 13 is the id of newline token in llama
             # assert responses_np[idx, pos] == 13, f"Not 13: {responses_np[idx, pos]}"
             # assert (
             #     responses_np[idx, pos + 1] == 13
@@ -439,7 +437,6 @@ def shape_math_process_rewards(
         else:
             raise ValueError(f"Unknown process_reward_scheme: {process_reward_scheme}")
 
-        # TODO (zhiqings): 0.25 is a magic number.
         positive_score = 0.25
         per_step_positive_score = positive_score / (len(scores) + 1e-6)
         normalized_score = [_ + per_step_positive_score for _ in normalized_score]
